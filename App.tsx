@@ -9,6 +9,7 @@ import SetUpPage from './src/profile/setUpPage';
 import AliasPage from './src/profile/alias/aliasPage';
 import RealId from './src/profile/realId/realId';
 import CareToShare from './src/profile/realId/careToShare';
+import Data from './src/profile/realId/data';
 const Stack = createStackNavigator();
 
 function App(): JSX.Element {
@@ -24,6 +25,7 @@ function App(): JSX.Element {
         <Stack.Screen name="AliasPage" component={AliasPage} options={{ headerShown: false }} />
         <Stack.Screen name="RealId" component={RealId} options={{ headerShown: false }} />
         <Stack.Screen name="CareToShare" component={CareToShare} options={{ headerShown: false }} />
+        <Stack.Screen name="Data" component={Data} options={{ headerShown: false }} />
 
       </Stack.Navigator>
 

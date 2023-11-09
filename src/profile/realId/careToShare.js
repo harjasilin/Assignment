@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, ScrollView, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, ScrollView, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons'
 import Blank from 'react-native-vector-icons/MaterialCommunityIcons'
 import Mobile from 'react-native-vector-icons/AntDesign'
-import { launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch } from "react-redux";
+import { share } from "../../action/careAction";
 
 const CareToShare = ({ navigation }) => {
-    const [imageURL, setImageURL] = useState('')
-    const onpickerClick = async () => {
-        const options = {
+    const dispatch = useDispatch()
+    const [work, setWork] = useState('')
+    const [title, setTitle] = useState('')
+    const handleAdd = () => {
+        if (!work || !title) {
+            Alert.alert('Please enter each filed.')
+            return;
         }
-        const result = await launchImageLibrary(options);
-        setImageURL(result.assets[0]?.uri)
+        const user = {
+            work, title
+        }
+        dispatch(share(user))
+        navigation.navigate('AliasPage')
     }
     return (
         <ScrollView style={styles.container}>
@@ -37,9 +45,8 @@ const CareToShare = ({ navigation }) => {
                     <TextInput
                         placeholder='Stark industries'
                         placeholderTextColor={'gray'}
-                    // value={password}
-                    // secureTextEntry={true}
-                    // onChangeText={(e) => setPassword(e)}
+                        value={work}
+                        onChangeText={(e) => setWork(e)}
                     />
                 </View>
                 <Text style={{ color: 'black', fontSize: 16, marginTop: 20 }}>What's your title/role?</Text>
@@ -50,51 +57,13 @@ const CareToShare = ({ navigation }) => {
                     <TextInput
                         placeholder='ironman'
                         placeholderTextColor={'gray'}
-                    // value={password}
-                    // secureTextEntry={true}
-                    // onChangeText={(e) => setPassword(e)}
+                        value={title}
+                        onChangeText={(e) => setTitle(e)}
                     />
                 </View>
-                <Text style={{ color: 'black', fontSize: 16, marginTop: 20 }}>When's your birthday?</Text>
-                <View style={{ flexDirection: 'row', marginTop: 20, gap: 10 }}>
-                    <View style={{ width: '30%' }}>
-                        <Text style={{ color: 'black', fontSize: 16, }}>Country</Text>
-                        <View style={styles.input}>
-                            <View style={{ marginStart: 10 }}>
-                                <Icon name="aperture-sharp" size={18} color="black" />
-                            </View>
-                            <TextInput
-                                placeholder='+##'
-                                placeholderTextColor={'gray'}
-                            // value={password}
-                            // secureTextEntry={true}
-                            // onChangeText={(e) => setPassword(e)}
-                            />
-                            <View style={{ justifyContent: 'flex-end' }}>
-                                <Mobile name="down" size={18} color="black" />
-                                {/* <Icon name="eye-off" size={18} color="black" /> */}
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{ width: '65%' }}>
-                        <Text style={{ color: 'black', fontSize: 16, }}>Mobile</Text>
-                        <View style={styles.input}>
-                            <View style={{ marginStart: 10 }}>
-                                <Mobile name="mobile1" size={18} color="black" />
-                            </View>
-                            <TextInput
-                                placeholder='xxx-xx xx xxx'
-                                placeholderTextColor={'gray'}
-                                keyboardType="numeric"
-                            // value={password}
-                            // secureTextEntry={true}
-                            // onChangeText={(e) => setPassword(e)}
-                            />
-                        </View>
-                    </View>
-                </View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('SignIn')}
+
+                <TouchableOpacity onPress={handleAdd}
                     style={styles.btn}>
                     <Text style={styles.btntxt}>Save and continue</Text>
                     <Icon name="arrow-redo-outline" size={25} color="black" />

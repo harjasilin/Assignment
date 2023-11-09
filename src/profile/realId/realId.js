@@ -1,17 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, ScrollView, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, ScrollView, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons'
 import Blank from 'react-native-vector-icons/MaterialCommunityIcons'
 import Mobile from 'react-native-vector-icons/AntDesign'
 import { launchImageLibrary } from 'react-native-image-picker';
+import { realId } from "../../action/realIdAction";
+import { useDispatch } from "react-redux";
 
 const RealId = ({ navigation }) => {
+    const dispatch = useDispatch()
+    const [email, setEmail] = useState('')
+    const [userName, setUserName] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [phone, setPhone] = useState('')
     const [imageURL, setImageURL] = useState('')
+
     const onpickerClick = async () => {
         const options = {
         }
         const result = await launchImageLibrary(options);
         setImageURL(result.assets[0]?.uri)
+    }
+    const isValidEmail = (email) => {
+        const emailPattern = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+        return emailPattern.test(email);
+
+    };
+    const handleAdd = () => {
+        if (!email || !userName || !firstName || !lastName || !phone || !imageURL) {
+            Alert.alert('Please enter each filed.')
+            return;
+        }
+        if (!isValidEmail(email)) {
+            Alert.alert('Invalid email address');
+            return;
+        }
+        if (phone.length !== 10) {
+            Alert.alert('Please enter valid phone number')
+            return;
+        }
+
+        const user = {
+            email,
+            userName,
+            firstName,
+            lastName,
+            phone,
+            imageURL
+
+        }
+        dispatch(realId(user))
+        navigation.navigate('CareToShare')
     }
     return (
         <ScrollView style={styles.container}>
@@ -39,9 +79,8 @@ const RealId = ({ navigation }) => {
                     <TextInput
                         placeholder='tony2jvj.com'
                         placeholderTextColor={'white'}
-                    // value={password}
-                    // secureTextEntry={true}
-                    // onChangeText={(e) => setPassword(e)}
+                        value={email}
+                        onChangeText={(e) => setEmail(e)}
                     />
                 </View>
                 <Text style={styles.textInputWrap}>User name *</Text>
@@ -52,9 +91,8 @@ const RealId = ({ navigation }) => {
                     <TextInput
                         placeholder='ironman'
                         placeholderTextColor={'gray'}
-                    // value={password}
-                    // secureTextEntry={true}
-                    // onChangeText={(e) => setPassword(e)}
+                        value={userName}
+                        onChangeText={(e) => setUserName(e)}
                     />
                 </View>
                 <Text style={styles.textInputWrap}>First name *</Text>
@@ -65,9 +103,8 @@ const RealId = ({ navigation }) => {
                     <TextInput
                         placeholder='ironman'
                         placeholderTextColor={'gray'}
-                    // value={password}
-                    // secureTextEntry={true}
-                    // onChangeText={(e) => setPassword(e)}
+                        value={firstName}
+                        onChangeText={(e) => setFirstName(e)}
                     />
                 </View>
                 <Text style={styles.textInputWrap}>Last name *</Text>
@@ -78,9 +115,8 @@ const RealId = ({ navigation }) => {
                     <TextInput
                         placeholder='ironman'
                         placeholderTextColor={'gray'}
-                    // value={password}
-                    // secureTextEntry={true}
-                    // onChangeText={(e) => setPassword(e)}
+                        value={lastName}
+                        onChangeText={(e) => setLastName(e)}
                     />
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 20, gap: 10 }}>
@@ -91,7 +127,7 @@ const RealId = ({ navigation }) => {
                                 <Icon name="aperture-sharp" size={18} color="black" />
                             </View>
                             <TextInput
-                                placeholder='+##'
+                                placeholder='+91'
                                 placeholderTextColor={'gray'}
                             // value={password}
                             // secureTextEntry={true}
@@ -99,7 +135,7 @@ const RealId = ({ navigation }) => {
                             />
                             <View style={{ justifyContent: 'flex-end' }}>
                                 <Mobile name="down" size={18} color="black" />
-                                {/* <Icon name="eye-off" size={18} color="black" /> */}
+
                             </View>
                         </View>
                     </View>
@@ -114,15 +150,15 @@ const RealId = ({ navigation }) => {
                                 placeholder='xxx-xx xx xxx'
                                 placeholderTextColor={'gray'}
                                 keyboardType="numeric"
-                            // value={password}
-                            // secureTextEntry={true}
-                            // onChangeText={(e) => setPassword(e)}
+                                value={phone}
+                                maxLength={10}
+                                onChangeText={(e) => setPhone(e)}
                             />
                         </View>
                     </View>
                 </View>
 
-                <TouchableOpacity onPress={() => navigation.navigate('CareToShare')}
+                <TouchableOpacity onPress={handleAdd}
                     style={styles.btn}>
                     <Text style={styles.saveText}>Save and continue</Text>
                     <Icon name="arrow-redo-outline" size={25} color="black" />

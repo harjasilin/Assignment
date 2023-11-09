@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, ScrollView, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, ScrollView, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons'
 import { signIn as inside } from "../action/authAction";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,7 +9,9 @@ const SignIn = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordVisible, setPasswordVisible] = useState(false);
+
     const users = useSelector((state) => state.user.users)
+
     const handleSignIn = () => {
         const existingUser = users.filter((user) => user.value.email === email)
         if (existingUser.length > 0) {
