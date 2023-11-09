@@ -1,5 +1,5 @@
 import {
-    SIGNUP, SIGNIN
+    SIGNUP, SIGNIN, LOGOUT
 } from './types';
 export const signUp = user => {
     return {
@@ -13,5 +13,7 @@ export const signIn = user => {
         payload: user
     }
 }
-
+export const logout = () => ({
+    type: LOGOUT,
+});
 

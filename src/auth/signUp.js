@@ -28,7 +28,7 @@ const SignUp = ({ navigation }) => {
         const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return passwordPattern.test(password);
     }
-    const handleAdd = () => {
+    const handleAdd = async () => {
         if (!email || !password || !confirmPassword) {
             Alert.alert('Please enter each filed.')
             return;
@@ -51,10 +51,24 @@ const SignUp = ({ navigation }) => {
             return;
         }
         const user = {
-            email,
-            password,
-
+            primary_email: email,
+            password: password,
+            os_platform: "ios",
+            os_platform_version: "0.1.0",
+            user_agent: "user1",
+            device_name: "device1",
+            type: "desktop",
+            device_id: "123"
         }
+        let result = await fetch("https://api-shield.rukkor.dev/api/users/register", {
+            method: "POST",
+            body: JSON.stringify(user),
+            header: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        })
+        result = await result.json()
         dispatch(signUp(user))
         navigation.navigate('SignIn')
     }

@@ -12,8 +12,9 @@ const SignIn = ({ navigation }) => {
 
     const users = useSelector((state) => state.user.users)
 
-    const handleSignIn = () => {
-        const existingUser = users.filter((user) => user.value.email === email)
+    const handleSignIn = async () => {
+
+        const existingUser = users.filter((user) => user.value.primary_email === email)
         if (existingUser.length > 0) {
             const existingPassword = existingUser[0].value.password
             if (existingPassword === password) {
@@ -25,6 +26,16 @@ const SignIn = ({ navigation }) => {
         } else {
             Alert.alert('Enter valid email')
         }
+        let user = { email, password }
+        let result = await fetch("https://api-shield.rukkor.dev/api/users/login", {
+            method: "POST",
+            body: JSON.stringify(user),
+            header: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        })
+        result = await result.json()
     };
 
     const togglePasswordVisibility = () => {

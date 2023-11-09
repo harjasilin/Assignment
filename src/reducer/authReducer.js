@@ -1,5 +1,5 @@
 import {
-    SIGNIN, SIGNUP
+    SIGNIN, SIGNUP, LOGOUT
 } from '../action/types';
 const initialState = {
     users: [],
@@ -20,7 +20,11 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 authenticatedUser: action.payload
             };
-
+        case LOGOUT:
+            return {
+                ...state,
+                authenticatedUser: null,
+            };
         default:
             return state;
     }

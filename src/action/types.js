@@ -1,4 +1,5 @@
 export const SIGNUP = 'SIGNUP'
 export const SIGNIN = 'SIGNIN'
+export const LOGOUT = 'LOGOUT'
 export const REALID = 'REALID'
 export const CARETOSHARE = 'CARETOSHARE'

@@ -19,7 +19,7 @@ const CareToShare = ({ navigation }) => {
             work, title
         }
         dispatch(share(user))
-        navigation.navigate('AliasPage')
+        navigation.navigate('Data')
     }
     return (
         <ScrollView style={styles.container}>
